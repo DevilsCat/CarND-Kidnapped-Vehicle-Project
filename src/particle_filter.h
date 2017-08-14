@@ -10,6 +10,8 @@
 #define PARTICLE_FILTER_H_
 
 #include "helper_functions.h"
+#include <iostream>
+#include <random>
 
 struct Particle {
 
@@ -23,20 +25,34 @@ struct Particle {
 	std::vector<double> sense_y;
 };
 
+inline std::ostream& operator<<(std::ostream& Str, Particle const& p) { 
+  return Str 
+  		<< "P[" << p.id << "]" 
+  		<< "x: " << p.x 
+  		<< ", y: " << p.y 
+  		<< ", theta: " << p.theta 
+  		<< ", weight: " << p.weight;
+}
 
+inline std::ostream& operator<<(std::ostream& Str, std::vector<Particle> const& v) {
+	for (auto& p : v) {
+		Str << p << std::endl;
+	}	
+	return Str;
+}
 
 class ParticleFilter {
 	
 	// Number of particles to draw
 	int num_particles; 
 	
-	
-	
 	// Flag, if filter is initialized
 	bool is_initialized;
 	
 	// Vector of weights of all particles
 	std::vector<double> weights;
+
+	std::default_random_engine gen;
 	
 public:
 	
